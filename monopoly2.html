@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<!-- <link href='http://fonts.googleapis.com/css?family=Sunshiney' rel='stylesheet' type='text/css'>
+		<link href='./css/styles.css' rel='stylesheet' type='text/css'> -->
+		<title>MonopolyMK</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="./js/game.js"></script>
+		<meta charset="utf-8">
+		<script>
+
+var context;
+var canvas;
+
+function Square(options) {
+this.type = options.type;
+this.name = options.name;
+this.color = options.color;
+};
+
+var board = {
+square_width: 70,
+square_height: 120,
+squares: [
+new Square({type:"corner", name:"START", color: "purple" }),
+new Square({type:"property", name:"1", color: "purple" }),
+new Square({type:"chest", name:"2", color: "purple" }),
+new Square({type:"property", name:"3", color: "purple" }),
+new Square({type:"tax", name:"4", color: "purple" }),
+new Square({type:"railroad", name:"5", color: "purple" }),
+new Square({type:"property", name:"6", color: "purple" }),
+new Square({type:"chance", name:"7", color: "purple" }),
+new Square({type:"property", name:"8", color: "purple" }),
+new Square({type:"property", name:"9", color: "purple" }),
+
+new Square({type:"corner", name:"10", color: "blue" }),
+new Square({type:"property", name:"11", color: "blue" }),
+new Square({type:"utility", name:"12", color: "blue" }),
+new Square({type:"property", name:"13", color: "blue" }),
+new Square({type:"property", name:"14", color: "blue" }),
+new Square({type:"railroad", name:"15", color: "blue" }),
+new Square({type:"property", name:"16", color: "blue" }),
+new Square({type:"chest", name:"17", color: "blue" }),
+new Square({type:"property", name:"18", color: "blue" }),
+new Square({type:"property", name:"19", color: "blue" }),
+
+new Square({type:"corner", name:"20", color: "red" }),
+new Square({type:"property", name:"21", color: "red" }),
+new Square({type:"chance", name:"22", color: "red" }),
+new Square({type:"property", name:"23", color: "red" }),
+new Square({type:"property", name:"24", color: "red" }),
+new Square({type:"railroad", name:"25", color: "red" }),
+new Square({type:"property", name:"26", color: "red" }),
+new Square({type:"property", name:"27", color: "red" }),
+new Square({type:"utility", name:"28", color: "red" }),
+new Square({type:"property", name:"29", color: "red" }),
+
+new Square({type:"corner", name:"30", color: "lime" }),
+new Square({type:"property", name:"31", color: "lime" }),
+new Square({type:"property", name:"32", color: "lime" }),
+new Square({type:"chest", name:"33", color: "lime" }),
+new Square({type:"property", name:"34", color: "lime" }),
+new Square({type:"railroad", name:"35", color: "lime" }),
+new Square({type:"chance", name:"36", color: "lime" }),
+new Square({type:"property", name:"37", color: "lime" }),
+new Square({type:"tax", name:"38", color: "lime" }),
+new Square({type:"property", name:"39", color: "lime" }),
+]
+};
+// function Questions (options) {
+// this.level= options.level;
+// this.name= options.name;
+// this.answer1=options.answer1;
+// this.answer2=options.answer2;
+// this.answer3=options.answer3;
+// this.answer4=options.answer4;
+// this.correct=options.correct;
+// this.point=options.point;
+//
+// }
+// var questions ={
+// count:2,
+// questions:[
+// new Questions({level:"1", name:"What is your name?", answer1:"Maria", answer2:"Elena", answer3:"Rafaeilia", answer4: "Marios", correct: "1", point: "5"}),
+// new Questions({level:"2", name:"How old are you?", answer1:"Maria", answer2:"1", answer3:"154", answer4: "20", correct: "4", point: "4"}),
+// ]
+//
+// };
+
+$(function() {
+canvas = $('#canvas')[0];
+canvas.height = 2*board.square_height+9*board.square_width;
+canvas.width = canvas.height;
+context = canvas.getContext('2d');
+
+//drawGrid(context);
+drawText(context)
+drawBoard(context);
+});
+
+function drawBoard(context){
+context.save()
+var extra = Math.abs(board.square_height - board.square_width)
+for(var i=0; i<40; i++){
+context.save()
+//context.rotate(Math.PI);
+var square = board.squares[i];
+var square_width = board.square_width
+var square_height = board.square_height
+
+if(Math.floor(i/10) == 0){
+var x = canvas.width-((i+1)%11)*square_width-extra;
+var y = canvas.height-square_height;
+}
+else if(Math.floor(i/10) == 1){
+context.translate(square_height,0)
+context.rotate(Math.PI/2)
+//when rotating 90degs, swap x/y
+var y = 0;
+var x = canvas.width-(((i+1)%11)+1)*square_width-extra;
+}
+
+else if(Math.floor(i/10) == 2){
+context.translate(canvas.width-square_width,square_height)
+context.rotate(Math.PI)
+var x = canvas.width-((i%10)+2)*square_width-extra;
+var y = 0;
+}
+else if(Math.floor(i/10) == 3){
+context.translate(canvas.height-square_height,canvas.width-square_width)
+context.rotate(1.5*Math.PI)
+//when rotating 90degs, swap x/y
+var x = canvas.width-((i%10)+2)*square_width-extra;
+var y = 0;
+}
+console.log(square.name)
+console.log("X: "+ x)
+console.log("Y: "+ y)
+
+if(square.type=="corner"){
+if(square_height > square_width){
+square_width += extra;
+} else {
+square_height += extra
+}
+
+}
+
+context.fillStyle = square.color;
+context.strokeRect(x, y, square_width, square_height)
+context.fillRect(x, y, square_width, square_height)
+context.strokeText(square.name.slice(0,8), x,y+square_height )
+if(square.type=="corner"){
+
+context.save()
+context.translate(x,y)
+context.rotate(1.5*Math.PI)
+context.strokeText(square.name.slice(0,8), -square_width,square_height)//-square_width,square_height )
+context.restore()
+}
+ 
+context.restore()
+}
+var img = new Image();
+img.src = "U:\EPL361\epl361\zari.gif";
+img.onload = function() {
+context.drawImage(img, 170, 170);
+      };
+
+context.restore()
+context.save()
+
+// for(i=0; i<questions.count-1; i++){
+// x=150
+// y=150
+// context.strokeText(questions.questions[i].name, 150, x)
+// x=x+10
+// context.strokeText(questions.questions[i].answer1, 150, x)
+// y=y+50
+// context.strokeText(questions.questions[i].answer2, y, x)
+// y=y+50
+// context.strokeText(questions.questions[i].answer3, y, x)
+// y=y+50
+// context.strokeText(questions.questions[i].answer4, y, x)
+// context.save()
+// }
+
+context.restore()
+}
+
+$(window).load(function () {
+// var spaceship = $('#spaceship')[0];
+// context.drawImage(spaceship, 100, 100);
+// context.drawImage(spaceship, 100, 150, 100, 25);
+// context.drawImage(spaceship, 0,0,60,50,100,200,60,50);
+});
+
+function drawText(context){
+context.font ='20pt Sunshiney';
+context.strokeStyle = "black";
+//context.fillText("grars", 50,50);
+//context.strokeText("PWN", 50,100);
+//context.fillText("OREOS", 50,150);
+}
+
+function drawGrid(context){
+var width = board.square_width;
+var height = board.square_height;
+for(var y=0; y<canvas.height; y+=height){
+for(var x=0; x<canvas.width; x+=width){
+context.strokeRect(x,y,width,height);
+context.fillText("("+x+","+y+")", x+8,y+board.square_height*.5 )
+}
+}
+}
+
+
+		</script>
+
+		<script>
+			var pos = 0,
+			    test,
+			    test_status,
+			    question,
+			    choice,
+			    choices,
+			    chA,
+			    chB,
+			    chC,
+			    chD,
+			    
+			    level,
+			    score=0,
+			    position=0;	
+			    correct = 0;
+			    
+			    
+			var questions = [["Στα εισερχόμενα του ηλεκτρονικού ταχυδρομείου σου υπάρχουν πολλά μηνύματα από πολλούς αποστολέες. Επίλεξε αυτό που έχει τις περισσότερες πιθανότητες να ανοίξεις. ",
+			 "Γειά σου πως είσαι; - Μαρία", "Κέρδισες ένα κινητό τηλέφωνο – winner@e-win.com", "O Κώστας θέλει να γίνετε φίλοι – fksender@abcd.com","Δωρεάν κονσόλα παιχνιδιών – kerdise@dora.com", "A", "1"], 
+			["Καθώς χρησιμοποιείς τον υπολογιστή εμφανίζεται ένα μήνυμα που λέει «Συγχαρητήρια κέρδισες $1000!! Πάτα ΕΔΩ για να τα πάρεις». Τι κάνεις;", 
+			"Παίρνω τα λεφτά", "Ρωτώ τον αδελφό/ή μου τι να κάνω.", "Αγνοώ/κλείνω το μήνυμα", "Κλείνω τον υπολογιστή", "C", "2"], 
+			["Καθώς είσαι στο πάρκο δέχεσαι μηνύματα στο κινητό τηλέφωνο από άγνωστο παραλήπτη. Τι κάνεις;", 
+			"Απαντώ για να δω ποιος είναι", "Διαγράφω τα μηνύματα", "Παίρνω τηλέφωνο για να ρωτήσω τι θέλει", "Αποθηκεύω το μηνύματα για να τα δείξω στους γονείς μου", "D", "3"], 
+			["Καθώς χρησιμοποιείς τον υπολογιστή εμφανίζεται μια διαφήμιση για δωρεάν ringtone και σου ζητά τον αριθμό πιστωτικής κάρτας των γονιών σου. Τι κάνεις;",
+			 "Είναι δωρεάν!! Πατώ στην διαφήμιση", "Το αγνοώ, δεν είναι αλήθεια", "Χρειάζομαι ένα νέο ringtone ας πατήσω σ’ αυτό.", "Όλοι οι φίλοι μου έχουν τέλεια ringtones, είναι ΟΚ να πατήσω στην διαφήμιση.", "B", "4"],
+			 ["Θέλεις να παίξεις ένα παιχνίδι διαδικτυακά το οποίο έχεις ξανά παίξει, όμως αντιμετωπίζεις προβλήματα και δεν μπορείς να ξεκινήσεις. Ένας φίλος σου προσφέρεται να σε βοηθήσει και θέλει τον κωδικό σου. Θα έδινες τον κωδικό σου;",
+			 "ΟΧΙ", "ΝΑΙ","Σίγουρα, ανυπομονώ να παίξω το παιχνίδι","Δεν είμαι σίγουρος/η.", "A", "1"],
+			 ["Σου στέλνει κάποιος άγνωστος μήνυμα και είναι πολύ καλός και ευγενικός, σου ζητά να βγείτε. Τι πρέπει να κάνεις;", "Θα καλέσω αστυνομία",
+			 "Να πάω μαζί με ένα φίλο μου", "Θα ενημερώσω αμέσως τους γονείς μου", "Αν του μιλώ καιρό και μου φαίνεται συμπαθητικός, θα βγω μαζί του", "C", "4"]];
+			function _(x) {
+				return document.getElementById(x);
+			}
+
+			function renderQuestion() {
+				test = _("test");
+				if (pos >= questions.length) {
+					test.innerHTML = "<h2>You got " + correct + " of " + questions.length + " questions correct</h2>";
+					_("test_status").innerHTML = "Test Completed";
+					test.innerHTML += "<a href='#'>Re-test</a>";
+					test.innerHTML += "<button onclick='showScore()'>Show Score</button>";
+					test.innerHTML += "<button>Done</button>";
+					pos = 0;
+					correct = 0;
+					return false;
+				}
+				_("test_status").innerHTML = "Question " + (pos + 1) + " of " + questions.length;
+				question = questions[pos][0];
+				chA = questions[pos][1];
+				chB = questions[pos][2];
+				chC = questions[pos][3];
+				chD = questions[pos][4];
+				level= questions[pos][6];
+				test.innerHTML = "<h3>" + question + "</h3>";
+				test.innerHTML += "<input type='radio' name='choices' value='A'> " + chA + "<br>";
+				test.innerHTML += "<input type='radio' name='choices' value='B'> " + chB + "<br>";
+				test.innerHTML += "<input type='radio' name='choices' value='C'> " + chC + "<br>";
+				test.innerHTML += "<input type='radio' name='choices' value='D'> " + chD + "<br><br>";
+				test.innerHTML += "<button onclick='checkAnswer(level)'>Submit Answer</button>";
+				test.innerHTML += "<button onclick='showScore()'>Show Score</button>";
+
+			}
+			
+			function showScore(){
+				str="Your score is: "+score;
+				alert(str);
+			}
+
+			function checkAnswer(level) {
+				choices = document.getElementsByName("choices");
+				for (var i = 0; i < choices.length; i++) {
+					if (choices[i].checked) {
+						choice = choices[i].value;
+					}
+				}
+				if (choice == questions[pos][5]) {
+					score+=level*1;
+					alert("Correct answer");
+					correct++;
+				}
+				else{
+					alert("Wrong answer");
+				}
+				pos++;
+				
+				renderQuestion();
+			}
+
+
+			window.addEventListener("load", renderQuestion, false);
+		</script>
+		
+	</head>
+	<body style="font-family: Sunshiney;">
+		<style type="text/css">
+			canvas {
+				border: 1px solid black;
+			}
+
+			.hide {
+				display: none;
+			}
+
+		</style>
+
+		<canvas id="canvas" width="740" height="740">
+			Your browser does not support the HTML5 Canvas feature. This game uses new HTML5 features and will only work on the latest versions of Firefox, Safari or Chrome (and maybe Internet Explorer 9).
+
+		</canvas>
+		<img src="../game/spaceship.png" id="spaceship" class="hide" />
+	<h2 id="test_status"></h2>
+	<div id="test"></div>
+		
+	</body>
+</html>
