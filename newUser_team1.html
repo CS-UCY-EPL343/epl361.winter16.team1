@@ -56,10 +56,11 @@
  surname = $( "#surname" ),
       school = $( "#school" ),
 classroom = $( "#classroom"),
-birthdate = $("#birthdate"),
-     
+birthdate1 = $("#birthdate1"),
+birthdate2 = $("#birthdate2"),
+birthdate3 = $("#birthdate3"),     
 
-      allFields = $( [] ).add( name ).add( surname ).add( school ).add (classroom).add( birthdate ),
+      allFields = $( [] ).add( name ).add( surname ).add( school ).add (classroom).add( birthdate1 ).add( birthdate2 ).add( birthdate3 ),
 
       tips = $( ".validateTips" );
 
@@ -161,7 +162,9 @@ birthdate = $("#birthdate"),
 
           "<td>" + classroom.val() + "</td>" +
           
-          "<td>" + birthdate.val() + "</td>" +
+          "<td>" + birthdate1.val() + "</td>" +
+          "<td>" + birthdate2.val() + "</td>" +
+          "<td>" + birthdate3.val() + "</td>" +
 
         "</tr>" );
         
@@ -175,10 +178,13 @@ birthdate = $("#birthdate"),
 		if(database_same_usernames_count<10){
 		newuser+=database_same_usernames_count;}
 		newuser+= ++database_same_usernames_count;
-		alert(newuser);
+		
+		//newuser must be saved in database
+		
+		alert("Καλωςορίσατε!! Το όνομα χρήστη σας είναι : "+ newuser);
 		
 		
-		alert(birthdate.val());
+        
         dialog.dialog( "close" );
 
       }
@@ -291,8 +297,8 @@ birthdate = $("#birthdate"),
 </select>
       <!--<input type="text" name="classroom" id="classroom" value="π.χ. Β" class="text ui-widget-content ui-corner-all">-->
 
-      <label for="birthdate1">Ημερομηνία Γεννήσεως</label>
-      	<select>
+      <label for="birthdate">Ημερομηνία Γεννήσεως</label>
+      	<select id="birthdate1">
   <option value="01">01</option>
   <option value="02">02</option>
   <option value="03">03</option>
