@@ -10,9 +10,11 @@ h1 {
 
 body {
      background-image: url("backround.jpg");
-     background-repeat: no-repeat;
-     background-position: left top;
-     background-attachment: fixed;
+   	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: cover;
+	background color: lightblue;
      
 }
 
