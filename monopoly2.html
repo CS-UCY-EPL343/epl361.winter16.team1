@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<!-- <link href='http://fonts.googleapis.com/css?family=Sunshiney' rel='stylesheet' type='text/css'>
+		<link href='./css/styles.css' rel='stylesheet' type='text/css'> -->
+		<title>MonopolyMK</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="./js/game.js"></script>
+		<style>
+			div.dice {
+				float: left;
+				width: 32px;
+				background: #F5F5F5;
+				border: #999 1px solid;
+				padding: 10px;
+				font-size: 24px;
+				text-align: center;
+				margin: 5px;
+			}
+
+			body {
+				background-image: url("tablo0.jpg");
+				background-repeat: no-repeat;
+				background-position: center;
+				background-attachment: fixed;
+				background-size: 100% 100%;
+			}
+			h3{
+				font-family:Arial, Helvetica, sans-serif;
+				font-size:17px;
+				font-style:oblique;
+				margin-right:20px;
+			}
+			
+		</style>
+
+		<script>
+			var pos = 0,
+			    test,
+			    test_status,
+			    question,
+			    choice,
+			    choices,
+			    chA,
+			    chB,
+			    chC,
+			    chD,    
+			    level,
+			    info,
+			    score=0,
+			    zari,
+			    position=parseInt($('#hidden1').text());	
+			    count=0;
+			    correct = 0;
+			    var d1 = Math.floor(Math.random() * 6) + 1;
+			    
+			var questions = [["Στα εισερχόμενα του ηλεκτρονικού ταχυδρομείου σου υπάρχουν πολλά μηνύματα από πολλούς αποστολέες. Επίλεξε αυτό που έχει τις περισσότερες πιθανότητες να ανοίξεις. ",
+			 "Γειά σου πως είσαι; - Μαρία", "Κέρδισες ένα κινητό τηλέφωνο – winner@e-win.com", "O Κώστας θέλει να γίνετε φίλοι – fksender@abcd.com","Δωρεάν κονσόλα παιχνιδιών – kerdise@dora.com", "A", "1","Σωστο γιατί... "], 
+			["Καθώς χρησιμοποιείς τον υπολογιστή εμφανίζεται ένα μήνυμα που λέει «Συγχαρητήρια κέρδισες $1000!! Πάτα ΕΔΩ για να τα πάρεις». Τι κάνεις;", 
+			"Παίρνω τα λεφτά", "Ρωτώ τον αδελφό/ή μου τι να κάνω.", "Αγνοώ/κλείνω το μήνυμα", "Κλείνω τον υπολογιστή", "C", "2","Σωστο γιατί... "], 
+			["Καθώς είσαι στο πάρκο δέχεσαι μηνύματα στο κινητό τηλέφωνο από άγνωστο παραλήπτη. Τι κάνεις;", 
+			"Απαντώ για να δω ποιος είναι", "Διαγράφω τα μηνύματα", "Παίρνω τηλέφωνο για να ρωτήσω τι θέλει", "Αποθηκεύω το μηνύματα για να τα δείξω στους γονείς μου", "D", "3","Σωστο γιατί... "], 
+			["Καθώς χρησιμοποιείς τον υπολογιστή εμφανίζεται μια διαφήμιση για δωρεάν ringtone και σου ζητά τον αριθμό πιστωτικής κάρτας των γονιών σου. Τι κάνεις;",
+			 "Είναι δωρεάν!! Πατώ στην διαφήμιση", "Το αγνοώ, δεν είναι αλήθεια", "Χρειάζομαι ένα νέο ringtone ας πατήσω σ’ αυτό.", "Όλοι οι φίλοι μου έχουν τέλεια ringtones, είναι ΟΚ να πατήσω στην διαφήμιση.","B","1","Σωστο γιατί... "],
+			 ["Θέλεις να παίξεις ένα παιχνίδι διαδικτυακά το οποίο έχεις ξανά παίξει, όμως αντιμετωπίζεις προβλήματα και δεν μπορείς να ξεκινήσεις. Ένας φίλος σου προσφέρεται να σε βοηθήσει και θέλει τον κωδικό σου. Θα έδινες τον κωδικό σου;",
+			 "ΟΧΙ", "ΝΑΙ","Σίγουρα, ανυπομονώ να παίξω το παιχνίδι","Δεν είμαι σίγουρος/η.", "A", "1","Σωστο γιατί... "],
+			 ["Σου στέλνει κάποιος άγνωστος μήνυμα και είναι πολύ καλός και ευγενικός, σου ζητά να βγείτε. Τι πρέπει να κάνεις;", "Θα καλέσω αστυνομία",
+			 "Να πάω μαζί με ένα φίλο μου", "Θα ενημερώσω αμέσως τους γονείς μου", "Αν του μιλώ καιρό και μου φαίνεται συμπαθητικός, θα βγω μαζί του", "C", "2","Σωστο γιατί... "],
+			 ["Καθώς χρησιμοποιείς τον υπολογιστή ένα μήνυμα εμφανίζετε που λέει ότι υπάρχει ιός. Τι κάνεις;", "Κλείνω αμέσως τον υπολογιστή. Δεν θέλω να αρρωστήσω.", "Κλείνω αμέσως τον υπολογιστή, μπορεί να χαλάσει αν πιάσει ιό.", 
+			 "Συνεχίζω να χρησιμοποιώ τον υπολογιστή αγνοώντας το μήνυμα.", "Τρέχω το πρόγραμμα Antivirus ή φωνάζω κάποιο που ξέρει να με βοηθήσει", "D", "3", "Σωστο γιατί..."],
+			 ["Τι δεν πρέπει να κάνετε στο διαδίκτυο;", "Να παρενοχλείτε τους άλλους.", "Να αναζητάτε πληροφορίες.", "Να παίζετε παιχνίδια.", "Να ακούτε μουσική", "Α", "1", "Σωστο γιατί..."],
+			 ["Η οθόνη του υπολογιστή σας, εμφανίζει ένα μήνυμα το οποίο δεν καταλαβαίνετε. Τι πρέπει να κάνετε;", "Να συνεχίσετε σαν να μην συμβαίνει τίποτα.", "Να κάνετε κλικ, είτε στο OK είτε στο ΝΑΙ(YES).",
+			 "Να συμβουλευτείτε τον γονέα ή τον δάσκαλο σας.", "Να κάνετε κλικ, είτε στο ΟΧΙ(No) είτε στο Ακύρωση(Cancel)", "C", "2", "Σωστο γιατί..."],
+			 ["Λαμβάνεις ένα μήνυμα στο ηλεκτρονικό ταχυδρομείο από ένα φίλο σου. Το μήνυμα περιέχει ένα συνημμένο το οποίο δεν περίμενες τι κάνεις.",
+			 "Ανοίγω το συνημμένο να δω τι είναι.", "Ανοίγω το συνημμένο, αν έχει ιό το κλείνω", "3.	Στέλνω μήνυμα στο φίλο μου για να μου πει τι περιέχει το συνημμένο.",
+			 "Αποθηκεύω το συνημμένο στον υπολογιστή μου αλλά δεν το ανοίγω μέχρι να μου πει ο φίλος μου τι είναι", "C", "3", "Σωστο γιατί..."],
+			 ["Προσπαθείς να εγκαταστήσεις ένα νέο παιχνίδι στον υπολογιστή σου. Εμφανίζετε ένα μήνυμα που ζητά να απενεργοποιήσεις το λογισμικό προστασίας από ιούς. Τι κάνεις;",
+			 "Απενεργοποιώ το λογισμικό και το ενεργοποιώ πάλι μόλις τελειώσω την εγκατάσταση.", "Αυτό είναι συνηθισμένο μήνυμα εγκατάστασης. Το αγνοώ.", 
+			 "Το λογισμικό προστασίας από τους ιούς πρέπει να αφαιρεθεί από τον υπολογιστή μου για να τρέξει το νέο πρόγραμμα.", "Σταματώ την εγκατάσταση. Δεν θα απενεργοποιήσω το λογισμικό προστασίας από τους ιούς",
+			 "D", "3", "Σωστο γιατί..."],
+			 ["Τι κάνουμε όταν κάποιος χρήστης του διαδικτύου μας ενοχλεί με προσβλητικά και απειλητικά μηνύματα;", "Αγνοούμε τα μηνύματά του, μπλοκάρουμε τον λογαριασμό του και ειδοποιούμε τους υπεύθυνους της υπηρεσίας που χρησιμοποιούμε κάνοντας σχετική καταγγελία.",
+			 "Ανταποδίδουμε χρησιμοποιώντας και στέλνοντας μηνύματα με παρόμοιο περιεχόμενο.", "Διαγράφω τα μηνύματα μην τα δει κάποιος άλλος", "Λέω στους φίλους μου να ανταποδώσουν και αυτοί τα μηνύματα.", "A", "2", "Σωστο γιατί..."],
+			 ["Ένας χρήστης του διαδικτύου υπόσχεται πως θα μας στείλει ένα ακριβό παιχνίδι σε πολύ καλή τιμή. Το μόνο που ζητάει είναι να του δώσουμε τον αριθμό της πιστωτικής κάρτας των γονέων μας",
+			 "Δεχόμαστε τον τρόπο συναλλαγής που μας ζητάει, χωρίς να κάνουμε κανέναν έλεγχο,  μιας και τόσο φθηνά δε θα βρούμε πουθενά αλλού το παιχνίδι.","Απορρίπτουμε την πρόταση και του ζητάμε να γίνει η συναλλαγή με έναν άλλο τρόπο.",
+			 "Δεχόμαστε αλλά πρέπει να πιάσουμε κρυφά από τους γονείς μας την πιστωτική κάρτα.", "Ζητάμε από τους γονείς μας την πιστωτική κάρτα.", "B", "1", "Σωστο γιατί..."],
+			 ["Εμφανίστηκε στην οθόνη μας ένα μήνυμα που προειδοποιεί πως κινδυνεύει ο υπολογιστής μας και πρέπει να δώσουμε πρόσβαση σε μια, άγνωστη σε εμάς, εταιρία για να τον προστατεύσει",
+			 "Δεν δίνουμε πρόσβαση και προσπαθούμε να μάθουμε περισσότερα στοιχεία για τον κίνδυνο που μας προειδοποιεί η συγκεκριμένη εταιρία.", "Δίνουμε ελεύθερη πρόσβαση μιας και υπόσχεται η εταιρία την ασφάλεια του υπολογιστή μας.",
+			 "Δίνουμε πρόσβαση μόνο αν γνωρίζουμε την εταιρεία.", "Δίνουμε πρόσβαση μόνο αν είναι δωρεάν", "A", "3", "Σωστο γιατί..."],
+			 ["Ένα μήνυμα ενημερώνει πως ο λογαριασμός μας σε μια αγαπημένη μας ιστοσελίδα κινδυνεύει να διαγραφεί και ζητάει να στείλουμε σε μια διεύθυνση τα στοιχεία σύνδεσης.", "Στέλνουμε όλα τα στοιχεία σύνδεσης",
+			 "Αγνοούμε το μήνυμα.", "Στέλνω τα στοιχεία μου αλλά όχι τον κωδικό", "Στέλνω μόνο τον κωδικό μου", "B", "1", "Σωστο γιατί..."]];
+			function _(x) {
+				return document.getElementById(x);
+			}
+
+			function renderQuestion() {
+				test = _("test");
+				//if(position>45)
+				position=parseInt($('#hidden1').text());
+				if ( position >= 45) {
+				
+					test.innerHTML = "<h2>Έφτασες στο τέλος του παιχνιδιού. Έχεις απαντήσει σωστα  " + correct + " από τις " + count + " ερωτήσεις. H βαθμολογία σου είναι " + score +  " .</h2>";
+					_("test_status").innerHTML = "Τέλος παιχνιδιού.";
+					//test.innerHTML += "<a href='#'>Re-test</a>";
+					test.innerHTML += "<button onclick='showScore()'>Δες την βαθμολογία σου</button>";
+					//test.innerHTML += "<button>Done</button>";
+					img.style.display = "none";
+					var status = document.getElementById("status");
+					status.innerHTML = "";
+					pos = 0;
+					correct = 0;
+					
+					return false;
+				}
+			
+			//	_("test_status").innerHTML = "Question " + (pos + 1) + " of " + questions.length;
+				zari=d1;	
+				count++;			
+				question = questions[pos][0];
+				chA = questions[pos][1];
+				chB = questions[pos][2];
+				chC = questions[pos][3];
+				chD = questions[pos][4];
+				level= questions[pos][6];
+				info= questions[pos][7];
+				test.innerHTML = "<h3>" + question + "</h3>";
+				test.innerHTML += "<input type='radio' name='choices' value='A'> " + chA + "<br>";
+				test.innerHTML += "<input type='radio' name='choices' value='B'> " + chB + "<br>";
+				test.innerHTML += "<input type='radio' name='choices' value='C'> " + chC + "<br>";
+				test.innerHTML += "<input type='radio' name='choices' value='D'> " + chD + "<br><br>";
+				test.innerHTML += "<button onclick='checkAnswer(level,position, info)'>Επιλογή Απάντησεις</button>";
+				test.innerHTML += "<button onclick='showScore()'>Δες την βαθμολογία σου</button>";
+				
+
+			}
+			
+			function showScore(){
+				str="Η βαθμολογία σου είναι:  "+score;
+				alert(str);
+			}
+
+			function checkAnswer(level, position, info) {
+				choices = document.getElementsByName("choices");
+				for (var i = 0; i < choices.length; i++) {
+					if (choices[i].checked) {
+						choice = choices[i].value;
+					}
+				}
+				if (choice == questions[pos][5]) {
+					score+=level*zari;
+					cor="Μπράβο έχεις απαντήση σωστά. " +info;
+					alert(cor);
+					correct++;
+					position=parseInt($('#hidden1').text());
+					position+=zari;
+					$('#hidden1').text(position);
+					
+					
+				}
+				else{
+					wro="Λυπάμαι αλλά η απάντηση σου είναι λάθος. "+ info;
+					position=parseInt($('#hidden1').text());
+					alert(wro);
+				}
+				//pos++;
+				
+			//	alert(positon);
+				if(position>=0 && position<=15){
+					pos=Math.floor(Math.random()*questions.length);
+					while(pos<questions.length-1 && questions[pos][6]!=1){
+					pos=Math.floor(Math.random()*questions.length);
+					}
+				}
+				else if (position>=16 && position<=30){
+					pos=Math.floor(Math.random()*questions.length);
+					while(pos<questions.length-1 && questions[pos][6]!=2){
+					pos=Math.floor(Math.random()*questions.length);
+					}
+				}
+				else if(position>=31 && position <=45){
+					pos=Math.floor(Math.random()*questions.length);
+					while(pos<questions.length-1 && questions[pos][6]!=3){
+					pos=Math.floor(Math.random()*questions.length);}
+				}
+				else {pos=questions.length+1;}
+
+				
+				// renderQuestion();
+				test = _("test");
+			test.innerHTML = "<button onclick='showScore()'>Δες την βαθμολογία σου</button>";
+			var img = document.getElementById('bigpic')
+					
+					img.style.display = "none";
+					var status = document.getElementById("status");
+					status.innerHTML = "";
+					var body = document.getElementsByTagName('body')[0];
+					if(position>=45){
+						var str="tablo45.jpg";
+						body.style.backgroundImage = 'url('+str+')';
+						renderQuestion();
+					}
+					else {
+					var str="tablo"+position+".jpg";
+					body.style.backgroundImage = 'url('+str+')';
+					}
+					
+			}
+						
+			function rollDice() {
+
+				var status = document.getElementById("status");
+
+				d1 = Math.floor(Math.random() * 6) + 1;
+				status.innerHTML = "Ο αριθμός του ζαριού είναι το " + d1 + ".";
+				
+
+			}
+			function showAnimated() {
+				var sourceOfPicture = "Animation1.gif";
+				var img = document.getElementById('bigpic')
+				img.src = sourceOfPicture.replace('90x90', '225x225');
+				img.style.display = "block";
+
+				var status = document.getElementById("status");
+				status.innerHTML = "";
+			}
+
+			function newkati() {
+
+				setTimeout(function() {
+					rollDice();
+				}, 2330);
+				setTimeout(function() {
+					showPicture();
+				}, 2330);
+				
+
+			}
+
+			function showPicture() {
+
+				if (d1 == 1) {
+					var sourceOfPicture = "assos.png";
+					var img = document.getElementById('bigpic')
+					img.src = sourceOfPicture.replace('90x90', '225x225');
+					img.style.display = "block";
+				} else if (d1 == 2) {
+
+					var sourceOfPicture = "thkioli.png";
+					var img = document.getElementById('bigpic')
+					img.src = sourceOfPicture.replace('90x90', '225x225');
+					img.style.display = "block";
+
+				} else if (d1 == 3) {
+
+					var sourceOfPicture = "tria.png";
+					var img = document.getElementById('bigpic')
+					img.src = sourceOfPicture.replace('90x90', '225x225');
+					img.style.display = "block";
+
+				} else if (d1 == 4) {
+
+					var sourceOfPicture = "tessera.png";
+					var img = document.getElementById('bigpic')
+					img.src = sourceOfPicture.replace('90x90', '225x225');
+					img.style.display = "block";
+
+				} else if (d1 == 5) {
+
+					var sourceOfPicture = "pente.png";
+					var img = document.getElementById('bigpic')
+					img.src = sourceOfPicture.replace('90x90', '225x225');
+					img.style.display = "block";
+
+				} else {
+
+					var sourceOfPicture = "exi.png";
+					var img = document.getElementById('bigpic')
+					img.src = sourceOfPicture.replace('40x40', '40x40');
+					img.style.display = "block";
+
+				}
+				renderQuestion();
+			}
+
+
+		//	window.addEventListener("load", renderQuestion, false);
+		</script>
+		
+	</head>
+	<body style="font-family: Sunshiney; ">
+		<style>
+			div {
+				margin-top: 80px;
+				margin-bottom:20px;
+				margin-right: 50px;
+				
+				float: right;
+				width: 92%;
+				margin-right: 0px;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 17px;
+				height: 620px;
+				overflow: auto;
+				position: relative;
+			}
+		</style>
+		<div>
+		
+		<button onclick="showAnimated(); newkati();";>
+			Ρίξε το ζάρι
+		</button>
+		<br />
+		<br />
+		<br />
+		<img style="display:none;" id="bigpic" src="bigpic" />
+
+		<h2 id="status" style="clear:left;"></h2>
+		<h2 id="test_status"></h2>
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<br />
+		<h3 id="test"></h3>
+		</div>
+				
+		
+		<div id="hidden1" hidden>
+			0
+		</div>
+
+	</body>
+	
+		
+</html>
