@@ -1,0 +1,32 @@
+h1 {
+	color: white;
+	font-size: 250%;
+}
+
+li {
+	color: white;
+	font-size: 25px;
+}
+
+input {
+	font-size: 25px;
+}
+
+body {
+	background-image: url("../images/LOGO.jpg");
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: cover;
+
+}
+.button {
+	
+	border-radius: 12px;
+	font-size: 32px;
+}
+
+.help {
+	border-radius: 10px;
+	font-size: 25px;
+	

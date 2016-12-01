@@ -1,0 +1,41 @@
+			div.dice {
+				float: left;
+				width: 32px;
+				background: #F5F5F5;
+				border: #999 1px solid;
+				padding: 10px;
+				font-size: 24px;
+				text-align: center;
+				margin: 5px;
+			}
+
+			body {
+				background-image: url("../images/tablo0.jpg"
+				);
+				background-repeat: no-repeat;
+				background-position: center;
+				background-attachment: fixed;
+				background-size: 100% 100%;
+			}
+			h3 {
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 17px;
+				font-style: oblique;
+				margin-right: 20px;
+				margin-left: 15px;
+				margin-bottom: 3px;
+				margin-right: 70px;
+			}
+			button {
+				background-color: #FF8C00;
+				border: none;
+				color: #8B0000;
+				padding: 24px 24px;
+				text-shadow: 2px 2px #A9A9A9;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 20px;
+				border-radius: 8px;
+				box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+			}
