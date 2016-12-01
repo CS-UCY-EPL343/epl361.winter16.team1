@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>eFollowMe Team 1 ©</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="../JSFiles/playing_now.js"></script>
+		<link href="../CSSFiles/playing_now.css" type="text/css" rel="stylesheet" />
+
+	</head>
+	<body style="font-family: Sunshiney; ">
+		<style>
+			div {
+				margin-top: 80px;
+				margin-bottom: 20px;
+				margin-right: 50px;
+				float: right;
+				width: 92%;
+				margin-right: 0px;
+				font-family: Arial, Helvetica, sans-serif;
+				font-size: 17px;
+				height: 620px;
+				overflow: auto;
+				position: relative;
+			}
+		</style>
+		<div>
+
+			<button id= "dice" onclick="showAnimated(); timeoutFunctions();";>
+				Ρίξε το ζάρι
+			</button>
+			<br />
+			<br />
+			<br />
+			<img style="display:none;" id="bigpic" src="bigpic" />
+
+			<h2 id="status" style="clear:left;"> </h2>
+			<h2 id="test_status"> </h2>
+
+			<h3 id="test"> </h3>
+			<h3 id ="test1"> </h3>
+		</div> 
+
+		<div id="hidden1" hidden>
+			0
+		</div>
+
+	</body>
+	<script src="../JSFiles/playing_now.js"></script>
+
+</html>
