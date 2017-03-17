@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Untitled Document</title>
+		<style type="text/css">
+			body {
+				background-image: url(../images/tablo0.jpg);
+				background-repeat: no-repeat;
+				background-attachment: fixed;
+				background-size: 100% 100%;
+			}
+			#container {
+				height: auto;
+				width: 70%;
+				margin-right: auto;
+				margin-left: auto;
+				margin-top: 10%;
+			}
+
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<link href="../dist/css/bootstrap.css" rel="stylesheet">
+		<link href="../CSSFiles/playing_now.css" rel="stylesheet" type="text/css">
+
+	</head>
+
+	<body >
+		<div id="container">
+
+			<button class="dice_button" id="dice_image" onClick="startQuestion()">
+				ΡΙΞΕ ΖΑΡΙ
+			</button>
+			<br>
+			<img src="../images/Animation1.gif" alt="" width="200" height="200" class="imageDiv" id="bigpic" style="visibility:hidden">
+		</div>
+
+		<!-- Modal -->
+		<div id="myModal" class="modal fade" >
+			<div class="modal-dialog modal-lg">
+				<!-- Modal content-->
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" onclick="end()">
+							&times;
+						</button>
+						<img id="diceResultImage"/>
+						<h4 id="diceResultText"></h4>
+					</div>
+					<div class="modal-body">
+						<h3 id="qtext"></h3>
+						<h5 id="atext"></h5>
+						<img style="display:block; float:left" id="reactionImage"/>
+					</div>
+					<div class="modal-footer">
+						<button type="button" id="next_button" class="btn btn-primary" onclick="nextQuestion()" >
+							Συνεχισε
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+	<script src="../JSFiles/playing_now_fixed.js"></script>
+	<script src="../dist/js/bootstrap.js"</script>
+	<script src="../dist/js/bootstrap.min.js"</script>
+
+</html>

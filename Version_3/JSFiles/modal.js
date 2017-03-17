@@ -1,0 +1,3 @@
+function loadModal(){
+	#myModal.show();
+}

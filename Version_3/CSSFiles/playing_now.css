@@ -1,0 +1,27 @@
+body {
+	background-image: url("../images/tablo0.jpg"
+	);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-attachment: fixed;
+	background-size: 100% 100%;
+}
+
+button {
+	background-color: #FF8C00;
+	border: none;
+	color: #8B0000;
+	padding-top: 20px;
+	padding-right: 20px;
+	padding-left: 20px;
+	padding-bottom: 20px;
+	text-shadow: 2px 2px #A9A9A9;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 20px;
+	border-radius: 8px;
+	box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	-webkit-box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+	margin-top: 30px;
+}
