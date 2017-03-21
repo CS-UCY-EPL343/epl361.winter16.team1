@@ -2,7 +2,10 @@
 session_start();
 if (!isset($_SESSION['login_error']))
 	$_SESSION['login_error'] = 0;
-
+if (!empty($_SESSION['message'])) {
+    echo '<div class="alert alert-info"> '.$_SESSION['message'].'</div>';
+    unset($_SESSION['message']);
+}
 ?>
 
 
@@ -23,7 +26,7 @@ if (!isset($_SESSION['login_error']))
 		<link href="../dist/css/bootstrap.min.css" rel="stylesheet">
 		<link href="../dist/css/bootstrap.css" rel="stylesheet">
 		<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.0/css/font-awesome.css" rel="stylesheet">
-		<link href="../css/login.css" rel="stylesheet">
+		
 
 	</head>
 

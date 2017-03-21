@@ -2,8 +2,10 @@
 session_start();
 if (!isset($_SESSION['user_logged']))
 	$_SESSION['user_logged'] = "false";
-else
-	$_SESSION['login_error']=0;
+
+else {
+	$_SESSION['login_error'] = 0;
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,8 +25,7 @@ else
 		<link href="../dist/css/bootstrap.css" rel="stylesheet">
 
 		<link href="../CSSFiles/submitForm.css" rel="stylesheet">
-				<link href="../CSSFiles/cover.css" rel="stylesheet">
-
+		<link href="../CSSFiles/cover.css" rel="stylesheet">
 
 		<!-- Custom styles for this template -->
 	</head>
@@ -55,25 +56,42 @@ else
 								</legend>
 
 								<!-- Name input-->
+
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="name">Όνομα:</label>
 									<div class="col-md-9">
-										<input id="name" name="name" type="text" placeholder="Το όνομα σας" class="form-control">
+										<?php
+										if (($_SESSION['user_logged']) == "true") {
+											echo "<input id=\"name\" name=\"name\" type=\"text\" class=\"form-control\" value=\"" . $_SESSION["name"] . "\">";
+										} else
+											echo "<input id=\"name\" name=\"name\" type=\"text\" placeholder=\"Το όνομα σας\" class=\"form-control\">";
+										?>
 									</div>
 								</div>
 
 								<!--Surname input-->
 								<div class="form-group">
-									<label class="col-md-3 control-label" for="name">Επίθετο:</label>
+									<label class="col-md-3 control-label" for="surname">Επίθετο:</label>
 									<div class="col-md-9">
-										<input id="name" name="name" type="text" placeholder="Το επίθετο σας" class="form-control">
+										<?php
+										if (($_SESSION['user_logged']) == "true") {
+											echo "<input id=\"surname\" name=\"surname\" type=\"text\" class=\"form-control\" value=\"" . $_SESSION["surname"] . "\">";
+										} else
+											echo "<input id=\"surname\" name=\"surname\" type=\"text\" placeholder=\"Το επίθετο σας\" class=\"form-control\">";
+										?>
 									</div>
 								</div>
-								<!--Town -->
+
+								<!--School -->
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="name">Σχολείο:</label>
 									<div class="col-md-9">
-										<input id="name" name="name" type="text" placeholder="Το σχολείο σας" class="form-control">
+										<?php
+										if (($_SESSION['user_logged']) == "true") {
+											echo "<input id=\"school\" name=\"school\" type=\"text\" class=\"form-control\" value=\"" . $_SESSION["school"] . "\">";
+										} else
+											echo "<input id=\"school\" name=\"school\" type=\"text\" placeholder=\"Το σχολείο σας\" class=\"form-control\">";
+										?>
 									</div>
 								</div>
 
@@ -81,7 +99,12 @@ else
 								<div class="form-group">
 									<label class="col-md-3 control-label" for="email">E-mail:</label>
 									<div class="col-md-9">
-										<input id="email" name="email" type="text" placeholder="Το email σας" class="form-control">
+										<?php
+										if (($_SESSION['user_logged']) == "true") {
+											echo "<input id=\"email\" name=\"email\" type=\"text\" class=\"form-control\" value=\"" . $_SESSION["email"] . "\">";
+										} else
+											echo "<input id=\"email\" name=\"email\" type=\"text\" placeholder=\"Το email σας\" class=\"form-control\">";
+										?>
 									</div>
 								</div>
 

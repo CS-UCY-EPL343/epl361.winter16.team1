@@ -4,6 +4,10 @@ if (!isset($_SESSION['user_logged']))
 	$_SESSION['user_logged'] = "false";
 else
 	$_SESSION['login_error']=0;
+if (!empty($_SESSION['message'])) {
+    echo '<div class="alert alert-info"> '.$_SESSION['message'].'</div>';
+    unset($_SESSION['message']);
+}
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +42,7 @@ else
 			<br>
 			<h1 class="cover-heading">Καλωσόρισες στο eFollow!</h1>
 			<p class="lead">
-				<a class="btn btn-lg btn-default" href="playing_now.html">ΠΑΙΞΕ ΤΩΡΑ !</a>
+				<a class="btn btn-lg btn-default" href="playing_now_fixed.html">ΠΑΙΞΕ ΤΩΡΑ !</a>
 			</p>
 
 		</div>

@@ -12,38 +12,46 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn -> connect_error) {
 	die("Connection failed: " . $conn -> connect_error);
 }
-echo "Connected to Database<br />";
-
+mysqli_query($conn, 'set character set UTF8');
+mysqli_query($conn, "SET NAMES 'utf8'");
 $username = "";
 $password = "";
-
+$user = "";
 // Define $username and $password
-$username = $_POST['username'];
-$password = $_POST['password'];
-
+$username = mysqli_real_escape_string($conn, $_POST['username']);
+$password = mysqli_real_escape_string($conn, $_POST['password']);
 // To protect MySQL injection (more detail about MySQL injection)
-$username = stripslashes($username);
-$password = stripslashes($password);
-
-$sql = "SELECT * FROM users WHERE username='$username' and password='$password'";
+$decpassword = "";
+$decpassword = mysqli_real_escape_string($conn, sha1($password));
+$sql = "SELECT * FROM users WHERE EMAIL='$username' and PASSWORD='$decpassword'";
 $result = mysqli_query($conn, $sql);
-
+$row = mysqli_fetch_array($result, MYSQL_ASSOC);
 // Mysql_num_row is counting table row
 $count = mysqli_num_rows($result);
 // If result matched $username and $password, table row must be 1 row
 if ($count == 1) {
-	echo "Success! $count";	
-	$_SESSION["user_logged"] = "true";
-	$_SESSION["user"]="user";
-	header("Location: ../HTMLFiles/LoginPage_2a.php");	
-	$_SESSION["login_error"] = 0;
+	if ($row['VERIFIED'] == "0") {
+		$_SESSION["user_logged"] = "false";
+		$_SESSION["login_error"] = 0;		
+		$_SESSION['message'] = 'Ο λογαριασμός σας δεν έχει ακόμα επιβεβαιωθεί!';
+		header('Location:../HTMLFiles/login.php');
+	} else {
+		$_SESSION["user_logged"] = "true";
+		$_SESSION["user"] = $row['NAME'];
+		$_SESSION["login_error"] = 0;
+		$_SESSION["name"] = $row['NAME'];
+		$_SESSION["surname"] = $row['SURNAME'];
+		$_SESSION["email"] = $row['EMAIL'];
+		$_SESSION["school"] = $row['SCHOOL'];
+		header('Location:../HTMLFiles/LoginPage_2a.php');
+	}	
 
 } else {
-	
-	$_SESSION["user_logged"] = "false";		
+
+	$_SESSION["user_logged"] = "false";
 	$_SESSION["login_error"] = 1;
-	header("Location: ../HTMLFiles/login.php");	
-	
+	header("Location: ../HTMLFiles/login.php");
+
 }
 
 $conn -> close();
